@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- Icons link -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+
+
+
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h3><i class="fa-solid fa-list-check"></i> My Tasks</h3>
+
+<div class="inputBox">
+<input id="task">
+<button class="addBtn" onclick="addTodo()">
+<i class="fa-solid fa-plus"></i>
+</button>
+</div>
+
+<ul id="list"></ul>
+
+</div>
+
+<script>
+
+var todos=[];
+
+if(localStorage.getItem("todos")){
+todos=JSON.parse(localStorage.getItem("todos"));
+}
+
+showTodos();
+
+function addTodo(){
+
+var value=document.getElementById("task").value;
+
+if(value=="")return;
+
+todos.push({text:value,done:false});
+
+localStorage.setItem("todos",JSON.stringify(todos));
+
+document.getElementById("task").value="";
+
+showTodos();
+
+}
+
+function toggleStatus(index){
+
+todos[index].done=!todos[index].done;
+
+localStorage.setItem("todos",JSON.stringify(todos));
+
+showTodos();
+
+}
+
+function deleteTodo(index){
+
+todos.splice(index,1);
+
+localStorage.setItem("todos",JSON.stringify(todos));
+
+showTodos();
+
+}
+
+function showTodos(){
+
+var output="";
+
+for(var i=0;i<todos.length;i++){
+
+output+="<li>";
+
+output+="<span>";
+
+output+=todos[i].done?
+"<strike>"+todos[i].text+"</strike>"
+:todos[i].text;
+
+output+="</span>";
+
+output+="<span class='icons'>";
+
+output+="<i class='fa-solid fa-check complete' onclick='toggleStatus("+i+")'></i>";
+
+output+="<i class='fa-solid fa-trash delete' onclick='deleteTodo("+i+")'></i>";
+
+output+="</span>";
+
+output+="</li>";
+
+}
+
+document.getElementById("list").innerHTML=output;
+
+}
+
+</script>
+
+</body>
+</html>
